@@ -1,15 +1,16 @@
 package org.motechproject.spike;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TestService {
 
-    public String create() {
-        return "(JMS) Created.";
-    }
+    @Autowired
+    private OutboundGateway outboundGateway;
 
-    public String count() {
-        return "(JMS) Count: -1";
+    public String enqueue() {
+        outboundGateway.sendEventMessage(new User("Soham", "Bangalore"));
+        return "(JMS) Enqueued.";
     }
 }

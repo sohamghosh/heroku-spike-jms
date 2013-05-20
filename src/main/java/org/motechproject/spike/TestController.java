@@ -13,14 +13,8 @@ public class TestController {
     private TestService service;
 
     @ResponseBody
-    @RequestMapping("/create")
-    private String create() {
-        return service.create();
-    }
-
-    @ResponseBody
-    @RequestMapping("/count")
-    private String count() {
-        return service.count();
+    @RequestMapping("/enqueue")
+    private String enqueue() {
+        return service.enqueue();
     }
 }
