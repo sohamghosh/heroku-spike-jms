@@ -10,7 +10,7 @@
     <context:property-placeholder location="classpath:amqp/rabbitmq.properties"/>
 
     <rabbit:connection-factory id="connectionFactory" host="${amqp.host}" port="${amqp.port}"
-                               username="${amqp.username}" password="${amqp.password}"/>
+                               username="${amqp.username}" password="${amqp.password}" virtual-host="${amqp.vhost}"/>
 
     <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
 
