@@ -13,6 +13,7 @@
         <jdk.version>1.7</jdk.version>
         <spring.version>3.1.0.RELEASE</spring.version>
         <spring.integration.version>2.1.0.RELEASE</spring.integration.version>
+        <spring.amqp.version>1.1.4.RELEASE</spring.amqp.version>
     </properties>
 
     <dependencies>
@@ -32,24 +33,37 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- JMS -->
+        <!-- Spring Integration Core -->
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-core</artifactId>
             <version>${spring.integration.version}</version>
         </dependency>
+
+
+        <!-- AMQP/RabbitMQ-->
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-amqp</artifactId>
+            <version>${spring.integration.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>${spring.amqp.version}</version>
+        </dependency>
+
+        <!-- JMS/ActiveMQ -->
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-jms</artifactId>
             <version>${spring.integration.version}</version>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
             <version>${spring.version}</version>
-        </dependency>-->
-
-        <!-- ActiveMQ -->
+        </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>

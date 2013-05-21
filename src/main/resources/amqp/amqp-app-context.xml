@@ -3,11 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:int="http://www.springframework.org/schema/integration"
-       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:amqp="http://www.springframework.org/schema/integration/amqp"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
        http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
-       http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
+       http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd">
 
     <context:annotation-config/>
 
@@ -15,24 +15,24 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <!-- Queue > JMS Adapter > Inbound Gateway > Service Adapter > Outbound Gateway > JMS Adapter > Queue -->
-
-    <!-- Spring Integration : Consumer -->
+    <!-- Inbound -->
+    <!-- Queue > AMQP Adapter > Channel > Inbound Adapter > Application -->
     <int:channel id="inbound"/>
 
-    <jms:message-driven-channel-adapter id="jmsIn" destination="testQueue" channel="inbound"
-                                        connection-factory="connectionFactory" acknowledge="transacted"/>
+    <amqp:inbound-channel-adapter channel="inbound" queue-names="si.test.queue" connection-factory="connectionFactory"/>
 
-    <int:outbound-channel-adapter id="inboundGateway" channel="inbound" ref="messageListener" method="handle"/>
+    <int:outbound-channel-adapter id="inboundAdapter" channel="inbound" ref="messageListener" method="handle"/>
 
-    <!-- Spring Integration : Outbound -->
+    <!-- Outbound -->
+    <!-- Application > Outbound Gateway > Channel > AMQP Adapter > Queue -->
     <int:channel id="outbound"/>
 
     <int:gateway id="outboundGateway" service-interface="org.motechproject.spike.OutboundGateway"
                  default-request-channel="outbound"/>
 
-    <jms:outbound-channel-adapter id="jmsOut" channel="outbound" destination="testQueue"/>
+    <amqp:outbound-channel-adapter channel="outbound" amqp-template="amqpTemplate" exchange-name="si.test.exchange"
+            routing-key="si.test.binding" />
 
     <!-- Queue -->
-    <import resource="queue-context.xml"/>
+    <import resource="rabbitmq-context.xml"/>
 </beans>
